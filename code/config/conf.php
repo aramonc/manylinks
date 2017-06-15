@@ -47,7 +47,7 @@ return [
         }
 
         $mongoDbOptions = new MongoDBOptions([
-            'database' => 'many-links',
+            'database' => getenv('DB_NAME'),
             'collection' => 'sessions',
         ]);
 

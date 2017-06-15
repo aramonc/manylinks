@@ -48,7 +48,7 @@ class Service
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->collection = $db->selectCollection('many-links', self::DB_COLLECTION);
+        $this->collection = $db->selectCollection(getenv('DB_NAME'), self::DB_COLLECTION);
         $this->linkService = $linkService;
     }
 

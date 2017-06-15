@@ -19,7 +19,7 @@ class Service
 
     public function __construct(Client $client)
     {
-        $this->collection = $client->selectCollection('many-links', self::DB_COLLECTION);
+        $this->collection = $client->selectCollection(getenv('DB_NAME'), self::DB_COLLECTION);
     }
 
     public function save(Link $link)

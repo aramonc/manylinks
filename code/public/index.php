@@ -12,6 +12,7 @@ if (getenv('APP_ENV') !== 'prod') {
     $env = new \Dotenv\Dotenv(__DIR__ . '/../config/');
     $env->load();
     $env->required('MONGODB_URI')->notEmpty();
+    $env->required('DB_NAME')->notEmpty();
 }
 
 $config = require_once '../config/conf.php';
