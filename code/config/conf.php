@@ -11,8 +11,7 @@ use Zend\Session\SessionManager;
 
 $env = new \Dotenv\Dotenv(__DIR__);
 $env->load();
-$env->required('DB_HOST')->notEmpty();
-$env->required('DB_PORT')->isInteger();
+$env->required('MONGODB_URI')->notEmpty();
 
 return [
     'view' => function (ContainerInterface $container) {
@@ -33,21 +32,7 @@ return [
         return $view;
     },
     'db' => function (ContainerInterface $container) {
-        $template = '%s:%s';
-        $vars = [];
-
-        if ($username = getenv('DB_USERNAME')) {
-            $template = '%s:%s@' . $template;
-            $vars[] = $username;
-            $vars[] = getenv('DB_PASSWORD');
-        }
-
-        $vars[] = getenv('DB_HOST');
-        $vars[] = getenv('DB_PORT');
-
-        $host = vsprintf('mongodb://' . $template, $vars);
-
-        return new Client($host);
+        return new Client(getenv('MONGODB_URI'));
     },
     'modules' => require_once 'modules.conf.php',
     'bitly' => require_once 'bitly.conf.php',
