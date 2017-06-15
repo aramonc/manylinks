@@ -9,10 +9,6 @@ use Zend\Session\SaveHandler\MongoDB;
 use Zend\Session\SaveHandler\MongoDBOptions;
 use Zend\Session\SessionManager;
 
-$env = new \Dotenv\Dotenv(__DIR__);
-$env->load();
-$env->required('MONGODB_URI')->notEmpty();
-
 return [
     'view' => function (ContainerInterface $container) {
 

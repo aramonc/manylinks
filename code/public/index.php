@@ -8,6 +8,12 @@ require '../vendor/autoload.php';
 
 chdir(__DIR__);
 
+if (getenv('APP_ENV') !== 'prod') {
+    $env = new \Dotenv\Dotenv(__DIR__ . '/../config/');
+    $env->load();
+    $env->required('MONGODB_URI')->notEmpty();
+}
+
 $config = require_once '../config/conf.php';
 
 $app = new App(new Container($config));
