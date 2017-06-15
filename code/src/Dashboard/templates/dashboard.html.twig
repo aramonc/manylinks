@@ -1,0 +1,99 @@
+{% extends '@app/index.html.twig' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row hidden-lg hidden-md">
+            <nav class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="links-menu-dropdown"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Dropdown
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="links-menu-dropdown">
+                    {% for link in links %}
+                        <li><a href="#" data-value="{{ link|json_encode() }}">{{ link.id }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs hidden-print">
+                <nav>
+                    {% for link in links %}
+                        <div class="row">
+                            <a href="#" class="link-item" data-value="{{ link|json_encode() }}">{{ link.id }}</a>
+                        </div>
+                    {% endfor %}
+                </nav>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <form action="{{ path_for('create-link') }}" method="post">
+                    <input type="hidden" name="id" value="">
+                    <div class="form-group">
+                        <label for="urls">URLs</label>
+                        <textarea class="form-control" name="urls" rows="6"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-default">Save</button>
+                </form>
+
+                <div class="panel panel-default hidden">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Links</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><strong>Link:</strong> <a href="#" class="link-anchor" target="_blank"></a></li>
+                            <li><strong>Bitly:</strong> <a href="#" class="bitly-anchor" target="_blank"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        const init = () => {
+            const expandBaseUrl = '{{ path_for('expand-link', {'linkId': ''}) }}';
+
+            // setup elements
+            let dropDown = document.querySelector('.dropdown');
+            let dropDownSelectors = dropDown.querySelectorAll('li > a');
+            let linkSelectors = document.querySelectorAll('.link-item');
+            let urls = document.querySelector('textarea[name="urls"]');
+            let linkId = document.querySelector('form > [name="id"]');
+            let linksPanel = document.querySelector('.panel');
+            let linkAnchor = linksPanel.querySelector('.link-anchor');
+            let bitlyAnchor = linksPanel.querySelector('.bitly-anchor');
+
+            // setup listeners
+            dropDownSelectors.forEach(function (selector) {
+                selector.addEventListener('click', (e) => {
+                    e && e.preventDefault();
+
+                    loadLink(JSON.parse(e.target.getAttribute('data-value')));
+                });
+            });
+            linkSelectors.forEach(function (selector) {
+                selector.addEventListener('click', (e) => {
+                    e && e.preventDefault();
+
+                    loadLink(JSON.parse(e.target.getAttribute('data-value')));
+                });
+            });
+
+            const loadLink = (link) => {
+                linkId.value = link.id;
+                urls.innerHTML = link.urls.join("\n");
+                linkAnchor.setAttribute('href', expandBaseUrl + link.id);
+                linkAnchor.innerHTML = link.id;
+                bitlyAnchor.setAttribute('href', link.bitly);
+                bitlyAnchor.innerHTML = link.bitly;
+                linksPanel.classList.remove('hidden');
+            };
+        };
+
+        document.addEventListener('DOMContentLoaded', init, false);
+    </script>
+{% endblock %}
