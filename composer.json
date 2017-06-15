@@ -37,5 +37,8 @@
   },
   "config": {
     "vendor-dir": "code/vendor"
+  },
+  "require-dev": {
+    "heroku/heroku-buildpack-php": "^121.0"
   }
 }
