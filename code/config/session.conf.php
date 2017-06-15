@@ -10,7 +10,7 @@ return [
         'cookie_lifetime' => 60 * 60 * 1,
         'gc_maxlifetime' => 60 * 60 * 24 * 30,
         'cache_expire' => 60 * 2,
-        'cookie_domain' => 'local.manylinks.online',
+        'cookie_domain' => '.manylinks.online',
         'cookie_httponly' => true,
         'name' => 'ml',
         'use_cookies' => true,
